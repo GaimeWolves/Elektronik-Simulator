@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ESim.Electronics.Util
+namespace ESim.Util
 {
     public static class Utilities
     {

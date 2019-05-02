@@ -1,6 +1,6 @@
 ﻿using System;
 using ESim.Electronics.Circuitry;
-using ESim.Electronics.GUI;
+using ESim.GUI;
 using ESim.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -59,7 +59,7 @@ namespace ESim
 
         private void OnWindowResized(object s, EventArgs e)
         {
-            gui.OnWindwowResized();
+
         }
     }
 }

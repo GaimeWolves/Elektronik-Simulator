@@ -70,13 +70,13 @@
     <Compile Include="Electronics\Circuitry\Components\Basic\VoltageSource.cs" />
     <Compile Include="Electronics\Circuitry\Components\Component.cs" />
     <Compile Include="Electronics\Circuitry\Wireing\Node.cs" />
-    <Compile Include="Electronics\GUI\GUIHandler.cs" />
-    <Compile Include="Electronics\GUI\View\CircuitView.cs" />
-    <Compile Include="Electronics\Input\InputHandler.cs" />
+    <Compile Include="GUI\GUIHandler.cs" />
+    <Compile Include="GUI\View\CircuitView.cs" />
+    <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Electronics\Simulation\MNA\MNAHelper.cs" />
     <Compile Include="Electronics\Simulation\Simulator.cs" />
     <Compile Include="Electronics\Simulation\State.cs" />
-    <Compile Include="Electronics\Util\Utilities.cs" />
+    <Compile Include="Util\Utilities.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

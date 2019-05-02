@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ESim.Electronics.Util;
+using ESim.Util;
 using ESim.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ESim.Electronics.GUI.View
+namespace ESim.GUI.View
 {
     public class CircuitView
     {
@@ -27,7 +27,6 @@ namespace ESim.Electronics.GUI.View
         {
             size = NoZoom;
             offset = new Vector2();
-            invalidated = true;
             Dot = Utilities.CreateTexture(graphics, 2, 2, (p) => Color.Black);
         }
 

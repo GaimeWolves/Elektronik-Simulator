@@ -1,4 +1,4 @@
-﻿using ESim.Electronics.GUI.View;
+﻿using ESim.GUI.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ESim.Electronics.GUI
+namespace ESim.GUI
 {
     public class GUIHandler
     {
@@ -26,11 +26,6 @@ namespace ESim.Electronics.GUI
         public void Update(GameTime gameTime)
         {
             viewport.Update(gameTime);
-        }
-
-        public void OnWindwowResized()
-        {
-
         }
     }
 }
