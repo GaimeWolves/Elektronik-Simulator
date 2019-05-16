@@ -27,7 +27,7 @@ namespace ESim.GUI.View
         {
             size = NoZoom;
             offset = new Vector2();
-            Dot = Utilities.CreateTexture(graphics, 2, 2, (p) => Color.Black);
+            Dot = Utilities.CreateTexture(graphics, 2, 2, (p) => Color.White);
         }
 
         public void Draw(SpriteBatch batch, GraphicsDevice graphics)
@@ -35,7 +35,24 @@ namespace ESim.GUI.View
             batch.Begin();
             for (int x = -1; x <= graphics.Viewport.Width / size + 1; x++)
                 for (int y = -1; y <= graphics.Viewport.Height / size + 1; y++)
-                    batch.Draw(Dot, new Vector2(offset.X % size + x * size, offset.Y % size + y * size), Color.White);
+                    batch.Draw(
+                        Dot,
+                        new Vector2(
+                            offset.X % size + x * size - Dot.Width / 2,
+                            offset.Y % size + y * size - Dot.Height / 2
+                            ),
+                        Color.Black
+                        );
+
+            batch.Draw(
+                Dot,
+                new Rectangle(
+                    (int)offset.X - (int)(Dot.Width * 1.5),
+                    (int)offset.Y - (int)(Dot.Height * 1.5),
+                    Dot.Width * 3,
+                    Dot.Height * 3
+                    ),
+                Color.Blue);
             batch.End();
         }
 

@@ -69,6 +69,7 @@
     <Compile Include="Electronics\Circuitry\Components\Basic\Resistor.cs" />
     <Compile Include="Electronics\Circuitry\Components\Basic\VoltageSource.cs" />
     <Compile Include="Electronics\Circuitry\Components\Component.cs" />
+    <Compile Include="Electronics\Circuitry\Visualization\Components\Fixed\Component.cs" />
     <Compile Include="Electronics\Circuitry\Wireing\Node.cs" />
     <Compile Include="GUI\GUIHandler.cs" />
     <Compile Include="GUI\View\CircuitView.cs" />
@@ -81,7 +82,8 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Electronics\Circuitry\Visualization\" />
+    <Folder Include="Electronics\Circuitry\Visualization\Components\Variable\" />
+    <Folder Include="Electronics\Circuitry\Visualization\Components\Wireing\" />
     <Folder Include="Electronics\Simulation\Transient\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
