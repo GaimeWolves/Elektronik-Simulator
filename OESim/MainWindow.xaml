@@ -19,7 +19,6 @@
             </ToolBarTray>
             <ScrollViewer DockPanel.Dock="Left" Background="White">
                 <StackPanel Name="_Components" MinWidth="100">
-                    
                 </StackPanel>
             </ScrollViewer>
             <Border BorderBrush="Gray" BorderThickness="1" Panel.ZIndex="-10">

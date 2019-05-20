@@ -1,4 +1,5 @@
-﻿using OESim.Circuit.Visualization;
+﻿using OESim.Circuit.Logic.Components.Linear;
+using OESim.Circuit.Visualization;
 using OESim.Utils;
 using System;
 using System.Collections.Generic;
@@ -23,12 +24,16 @@ namespace OESim
     public partial class MainWindow : Window
     {
         Wire? _CurrentWire;
+        Component _CurrentComponent;
         Point _InitialClick;
         Point _LastPosition;
 
         public MainWindow()
         {
             InitializeComponent();
+            Resistor r = new Resistor();
+            Component c = new Component(r, r.CreateVisual());
+            _Components.Children.Add(UIUtils.CreateComponentButton(c, "Resistor", 100));
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -46,18 +51,22 @@ namespace OESim
 
         private void OnCircuitLeftReleased(object sender, MouseButtonEventArgs e)
         {
-            _CurrentWire = null;
+            if (_CurrentWire.HasValue)
+            {
+                if (_CurrentWire.Value.P1 == _CurrentWire.Value.P2)
+                    _CircuitView.DeleteWire(_CurrentWire.Value);
+                _CurrentWire = null;
+            }
         }
 
         private void OnCircuitMouseMoved(object sender, MouseEventArgs e)
         {
             if (!(_CurrentWire is null))
-                _CircuitView.UpdateWire(_CurrentWire.Value, _InitialClick, Mouse.GetPosition(_CircuitView)); 
+                _CurrentWire = _CircuitView.UpdateWire(_CurrentWire.Value, _InitialClick, Mouse.GetPosition(_CircuitView)); 
 
             if (e.RightButton == MouseButtonState.Pressed)
-            {
                 _CircuitView.Offset += Mouse.GetPosition(_CircuitView) - _LastPosition;
-            }
+
             _LastPosition = Mouse.GetPosition(_CircuitView);
         }
 
@@ -82,6 +91,12 @@ namespace OESim
                     break;
                 case Key.Right:
                     _CircuitView.Move(new Point(-_CircuitView.Zoom / 2, 0));
+                    break;
+                case Key.Back:
+                    _CircuitView.DeleteKeyPressed();
+                    break;
+                case Key.Delete:
+                    _CircuitView.DeleteKeyPressed();
                     break;
             }
         }

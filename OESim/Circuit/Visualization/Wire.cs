@@ -12,17 +12,16 @@ namespace OESim.Circuit.Visualization
 {
     public struct Wire
     {
-        private Path path;
         private Point p1, p2;
 
-        public Path Path { get => path; }
+        public Path Path { get; }
         public Point P1
         {
             get => p1;
             set
             {
                 p1 = value;
-                PathUtils.UpdatePath(path, p1, p2);
+                PathUtils.UpdatePath(Path, p1, p2);
             }
         }
         public Point P2
@@ -31,21 +30,21 @@ namespace OESim.Circuit.Visualization
             set
             {
                 p2 = value;
-                PathUtils.UpdatePath(path, p1, p2);
+                PathUtils.UpdatePath(Path, p1, p2);
             }
         }
 
         public Wire(Point p1, Point p2)
         {
-            path = PathUtils.CreatePath(p1, p2);
+            Path = PathUtils.CreatePath(p1, p2);
             this.p1 = p1;
             this.p2 = p2;
         }
 
         public Wire(Point p1, Point p2, TransformGroup transform)
         {
-            path = PathUtils.CreatePath(p1, p2);
-            path.RenderTransform = transform;
+            Path = PathUtils.CreatePath(p1, p2);
+            Path.RenderTransform = transform;
             this.p1 = p1;
             this.p2 = p2;
         }

@@ -1,47 +1,22 @@
-﻿using System;
+﻿using OESim.Circuit.Logic.Components.Linear;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace OESim.Circuit.Visualization
 {
-    /// <summary>
-    /// Führen Sie die Schritte 1a oder 1b und anschließend Schritt 2 aus, um dieses benutzerdefinierte Steuerelement in einer XAML-Datei zu verwenden.
-    ///
-    /// Schritt 1a) Verwenden des benutzerdefinierten Steuerelements in einer XAML-Datei, die im aktuellen Projekt vorhanden ist.
-    /// Fügen Sie dieses XmlNamespace-Attribut dem Stammelement der Markupdatei 
-    /// an der Stelle hinzu, an der es verwendet werden soll:
-    ///
-    ///     xmlns:MyNamespace="clr-namespace:OESim.Circuit.Visualization"
-    ///
-    ///
-    /// Schritt 1b) Verwenden des benutzerdefinierten Steuerelements in einer XAML-Datei, die in einem anderen Projekt vorhanden ist.
-    /// Fügen Sie dieses XmlNamespace-Attribut dem Stammelement der Markupdatei 
-    /// an der Stelle hinzu, an der es verwendet werden soll:
-    ///
-    ///     xmlns:MyNamespace="clr-namespace:OESim.Circuit.Visualization;assembly=OESim.Circuit.Visualization"
-    ///
-    /// Darüber hinaus müssen Sie von dem Projekt, das die XAML-Datei enthält, einen Projektverweis
-    /// zu diesem Projekt hinzufügen und das Projekt neu erstellen, um Kompilierungsfehler zu vermeiden:
-    ///
-    ///     Klicken Sie im Projektmappen-Explorer mit der rechten Maustaste auf das Zielprojekt und anschließend auf
-    ///     "Verweis hinzufügen"->"Projekte"->[Navigieren Sie zu diesem Projekt, und wählen Sie es aus.]
-    ///
-    ///
-    /// Schritt 2)
-    /// Fahren Sie fort, und verwenden Sie das Steuerelement in der XAML-Datei.
-    ///
-    ///     <MyNamespace:CircuitView/>
-    ///
-    /// </summary>
     public class CircuitView : Canvas
     {
         private static readonly double NormalZoom = 25, MaxZoom = 100, MinZoom = 5;
 
         public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register("Offset", typeof(Point), typeof(CircuitView), new FrameworkPropertyMetadata(new Point()));
         public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(CircuitView), new FrameworkPropertyMetadata(NormalZoom));
+
+        private Wire? _Selected;
 
         public Point Offset
         {
@@ -56,6 +31,7 @@ namespace OESim.Circuit.Visualization
         }
 
         private List<Wire> _Wires;
+        private List<Component> _Components;
         private TransformGroup _Transform;
 
         static CircuitView()
@@ -67,7 +43,23 @@ namespace OESim.Circuit.Visualization
         {
             base.OnInitialized(e);
             _Wires = new List<Wire>();
-            _Transform = new TransformGroup();            
+            _Components = new List<Component>();
+            _Transform = new TransformGroup();
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            if (_Selected.HasValue)
+            {
+                if (!_Selected.Value.Path.IsMouseOver)
+                {
+                    _Selected.Value.Path.Stroke = Brushes.Black;
+                    _Selected = null;
+                }
+            }
+
+            e.Handled = false;
+            base.OnMouseDown(e);
         }
 
         private void UpdateImage()
@@ -86,7 +78,17 @@ namespace OESim.Circuit.Visualization
             _Transform.Children.Add(new ScaleTransform(Zoom, Zoom));
             _Transform.Children.Add(new TranslateTransform(Offset.X, Offset.Y));
             foreach (UIElement e in Children)
+            {
                 e.RenderTransform = _Transform;
+                if (e is Component)
+                {
+                    TransformGroup newTransform = new TransformGroup();
+                    newTransform.Children.Add(new RotateTransform((e as Component).Angle));
+                    newTransform.Children.Add(new ScaleTransform(Zoom, Zoom));
+                    newTransform.Children.Add(new TranslateTransform(Offset.X + (e as Component).Position.X * Zoom, Offset.Y + (e as Component).Position.Y * Zoom));
+                    e.RenderTransform = newTransform;
+                }
+            }
         }
 
         public void Invalidate() => UpdateImage();
@@ -96,18 +98,45 @@ namespace OESim.Circuit.Visualization
             Offset = new Point(Offset.X + dP.X, Offset.Y + dP.Y);
         }
 
+        public void DeleteKeyPressed()
+        {
+            if (_Selected.HasValue)
+            {
+                Children.Remove(_Selected.Value.Path);
+                _Wires.Remove(_Selected.Value);
+                _Selected = null;
+            }
+        }
+
+        public void DeleteWire(Wire wire)
+        {
+            if (_Selected.HasValue)
+                if (_Selected.Value.Equals(wire))
+                    _Selected = null;
+            Children.Remove(wire.Path);
+            _Wires.Remove(wire);
+        }
+
         public Wire CreateWire(Point p1, Point p2)
         {
             Wire wire = new Wire(GetNearestIndex(p1), GetNearestIndex(p2), _Transform);
+            wire.Path.MouseDown += (s, e) =>
+            {
+                if (_Selected.HasValue)
+                    _Selected.Value.Path.Stroke = Brushes.Black;
+                _Selected = wire;
+                _Selected.Value.Path.Stroke = Brushes.Blue;
+            };
             _Wires.Add(wire);
             Children.Add(wire.Path);
             return wire;
         }
 
-        public void UpdateWire(Wire wire, Point p1, Point p2)
+        public Wire UpdateWire(Wire wire, Point p1, Point p2)
         {
             wire.P1 = GetNearestIndex(p1);
             wire.P2 = GetNearestIndex(p2);
+            return wire;
         }
 
         private Point GetNearestIndex(Point pos)
