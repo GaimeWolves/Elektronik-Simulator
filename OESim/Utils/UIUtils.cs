@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -13,15 +14,16 @@ namespace OESim.Utils
 {
     public static class UIUtils
     {
-        public static Button CreateComponentButton(Component component, string name, int size)
+        public static Button CreateComponentButton(Component component, double size, RoutedEventHandler handler)
         {
             Button ret = new Button();
-            ret.Name = name;
+            ret.Name = component.IComponent.GetAttribute<string>("Name");
             ret.MinHeight = size;
             ret.MaxHeight = size;
             ret.MinWidth = size;
             ret.MaxWidth = size;
             ret.Background = null;
+            ret.Click += handler;
 
             Grid grid = new Grid();
             grid.MinHeight = size;
@@ -48,7 +50,7 @@ namespace OESim.Utils
 
             view.Child = new TextBlock()
             {
-                Text = name,
+                Text = component.IComponent.GetAttribute<string>("Name"),
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center
             };
 

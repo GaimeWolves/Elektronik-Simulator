@@ -75,7 +75,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Circuit\Logic\Components\IComponent.cs" />
+    <Compile Include="Circuit\Logic\Components\IEComponent.cs" />
     <Compile Include="Circuit\Logic\Components\Linear\Resistor.cs" />
     <Compile Include="Circuit\Visualization\Component.cs" />
     <Compile Include="Circuit\Visualization\Wire.cs" />

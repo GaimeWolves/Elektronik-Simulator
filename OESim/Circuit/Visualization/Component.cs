@@ -21,7 +21,7 @@ namespace OESim.Circuit.Visualization
 {
     public class Component : Canvas
     {
-        private IEComponent _Component;
+        public IEComponent IComponent { get; private set; }
         private string _Name;
 
         public Point Position { get; set; }
@@ -37,16 +37,17 @@ namespace OESim.Circuit.Visualization
             
         }
 
-        public Component(IEComponent component, UIElement cVisual) : this()
+        public Component(IEComponent component) : this()
         {
-            _Component = component;
+            IComponent = component;
+            UIElement cVisual = component.CreateVisual();
 
             Children.Add(cVisual);
 
-            double boundsX = _Component.GetAttribute<double>("BoundsX");
-            double boundsY = _Component.GetAttribute<double>("BoundsY");
+            double boundsX = IComponent.GetAttribute<double>("BoundsX");
+            double boundsY = IComponent.GetAttribute<double>("BoundsY");
 
-            _Name = _Component.GetAttribute<string>("Name"); ;
+            _Name = IComponent.GetAttribute<string>("Name");
 
             Canvas.SetTop(cVisual, -boundsY / 2);
             Canvas.SetLeft(cVisual, -boundsX / 2);

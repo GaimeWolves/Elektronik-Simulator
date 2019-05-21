@@ -22,9 +22,10 @@ namespace OESim.Circuit.Logic.Components.Linear
             _Attributes.Add("BoundsX", 1.0);
             _Attributes.Add("BoundsY", 4.0);
             _Attributes.Add("Name", "Resistor");
+            _Attributes.Add("Nodes", new List<Point> { new Point(0, -2), new Point(0, 2) });
         }
 
-        public Path CreateVisual()
+        public UIElement CreateVisual()
         {
             Path path = new Path();
             path.Stroke = Brushes.Black;

@@ -7,7 +7,7 @@
         xmlns:visualization="clr-namespace:OESim.Circuit.Visualization"
         mc:Ignorable="d"
         Title="Open Electronics Simulator - OESim" Height="450" Width="800"
-        PreviewKeyDown="OnKeyDown">
+        PreviewKeyDown="OnKeyDown" Loaded="OnLoaded">
     <Grid Background="White">
         <DockPanel>
             <ToolBarTray DockPanel.Dock="Top" Background="White">
@@ -22,7 +22,7 @@
                 </StackPanel>
             </ScrollViewer>
             <Border BorderBrush="Gray" BorderThickness="1" Panel.ZIndex="-10">
-                <visualization:CircuitView x:Name="_CircuitView" MouseMove="OnCircuitMouseMoved" Background="White" MouseLeftButtonDown="OnCircuitLeftClicked" MouseLeftButtonUp="OnCircuitLeftReleased" MouseWheel="OnCircuitScrolled" SizeChanged="OnCircuitSizeChanged" Margin="0,0,0.309,-0.345"/>
+                <visualization:CircuitView x:Name="_CircuitView" MouseMove="OnCircuitMouseMoved" Background="White" MouseLeftButtonDown="OnCircuitLeftClicked" MouseLeftButtonUp="OnCircuitLeftReleased" MouseWheel="OnCircuitScrolled" SizeChanged="OnCircuitSizeChanged" Margin="0,0,0.309,-0.345" MouseRightButtonDown="OnCircuitRightClicked"/>
             </Border>
         </DockPanel>
     </Grid>
